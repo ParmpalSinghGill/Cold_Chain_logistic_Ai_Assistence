@@ -2,3 +2,9 @@ pandas
 sqlalchemy
 python-dotenv
 pyodbc
+requests
+streamlit
+langchain-core
+langchain-openai
+langchain-pinecone
+langchain-huggingface
