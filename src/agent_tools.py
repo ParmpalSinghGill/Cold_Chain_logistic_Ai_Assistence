@@ -1,4 +1,5 @@
 import os
+from typing import Any
 import urllib
 import requests
 from pathlib import Path
@@ -106,7 +107,7 @@ def query_telemetry_db(sql_query: str) -> str:
             
         with engine.connect() as conn:
             cursor = conn.execute(text(sql_query))
-            columns = list(cursor.keys())
+            columns = list[Any](cursor.keys())
             rows = cursor.fetchmany(10)
             
             if not rows:

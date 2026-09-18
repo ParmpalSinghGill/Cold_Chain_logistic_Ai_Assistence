@@ -8,3 +8,6 @@ langchain-core
 langchain-openai
 langchain-pinecone
 langchain-huggingface
+langchain-ollama
+langgraph
+torchvision

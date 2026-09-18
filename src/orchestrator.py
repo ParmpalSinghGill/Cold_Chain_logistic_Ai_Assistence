@@ -1,4 +1,5 @@
 import os
+from pprint import pprint
 import sys
 from pathlib import Path
 from dotenv import load_dotenv
@@ -38,25 +39,25 @@ if AGENT_LLM_SETTING == "OPENAI":
     llm = ChatOpenAI(model="gpt-4o", temperature=0)
 
 elif AGENT_LLM_SETTING == "DEEPSEEK":
-    print("🐳 Brain Mode: Utilizing Flagship DeepSeek Cloud Reasoner (deepseek-v4-pro)...")
+    print("🐳 Brain Mode: Utilizing DeepSeek Cloud Reasoner (deepseek-flash)...")
     from langchain_openai import ChatOpenAI
     
-    # Fully updated to match 2026 DeepSeek API parameters and endpoint contracts
+    # Valid DeepSeek API model ids: deepseek-flash, deepseek-v4-pro
     llm = ChatOpenAI(
-        model="deepseek-v4-flash",                           # deepseek-v4-flash, deepseek-v4-pro
+        model="deepseek-flash",
         temperature=0,
-        openai_api_key=os.getenv("DEEPSEEK_API_KEY"),
-        base_url="https://api.deepseek.com",     # Fixed connection string url endpoint
-        max_tokens=2048,                                   # Gives the deep reasoner plenty of output runway
+        api_key=os.getenv("DEEPSEEK_API_KEY"),
+        base_url="https://api.deepseek.com",
+        max_tokens=2048,
         # extra_body={
-        #     "thinking": {"type": "enabled"},              # Activates DeepSeek Deep-Thinking mode
-        #     "reasoning_effort": "high"                     # Drives maximal reasoning depth for logic maps
+        #     "thinking": {"type": "enabled"},
+        #     "reasoning_effort": "high"
         # }
     )
 
 else:  # FALLBACK / DEFAULT RUNNER MODE
     print("🤗 Brain Mode: Local Fallback Activated. Binding Local Ollama (qwen2.5:7b)...")
-    from langchain_community.chat_models import ChatOllama
+    from langchain_ollama import ChatOllama
     llm = ChatOllama(model="qwen2.5:7b", temperature=0, num_predict=1024)
 
 fde_tools = [query_telemetry_db, fetch_corridor_conditions, search_compliance_sop]
@@ -112,7 +113,10 @@ if __name__ == "__main__":
         for event in events:
             for node_name, node_state in event.items():
                 if node_name == "tools":
-                    print("   [System] 🔄 Retrieving external data elements via ToolNode...")
+                    print("*****************************")
+                    print("   [System] 🔄 Retrieving external data elements via ToolNode...",node_name)
+                    pprint(node_state)
+                    print("*****************************")
                 elif node_name == "reasoner":
                     latest_msg = node_state["messages"][-1]
                     if latest_msg.content:

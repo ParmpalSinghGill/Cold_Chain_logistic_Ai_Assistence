@@ -39,3 +39,9 @@ I
 
 
 SELECT COUNT(*) AS total_rows FROM dbo.TBL_SC_FLEET_HIST_RAW;
+
+
+question
+Find any active shipments near Los Angeles (Latitude ~33.8, Longitude ~-118.1). Check th e local weather there, and tell me if the current cargo temperature violates the SOP for fresh perish ables.
+
+ What is the exact port congestion index in Miami right now, and what does the SOP say we should do about it?
